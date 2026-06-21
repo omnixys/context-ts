@@ -10,6 +10,7 @@ import type { FastifyReply } from 'fastify';
  * @param value - The cookie value.
  * @param opts - Additional cookie options.
  */
+/** @deprecated Use the security package's cookie services for policy-controlled cookies. */
 export function gqlSetCookieSafe(
   reply: FastifyReply,
   name: string,
@@ -25,10 +26,15 @@ export function gqlSetCookieSafe(
  * @param res - Express response object.
  * @param name - The cookie name to remove.
  */
+/** @deprecated Use the security package's cookie services for policy-controlled cookies. */
 export function gqlClearCookieSafe(reply: FastifyReply, name: string): void {
   reply.clearCookie(name, cookieOpts());
 }
 
+/**
+ * @deprecated Use `TokenCookieService.setTokens()` from `@omnixys/security`.
+ * This legacy API writes one value into both token cookies.
+ */
 export function gqlSetTokens(
   reply: FastifyReply,
   value: string,
@@ -39,6 +45,7 @@ export function gqlSetTokens(
   gqlSetCookieSafe(reply, refreshToken, value, maxAgeMs);
 }
 
+/** @deprecated Use `TokenCookieService.clearTokens()` from `@omnixys/security`. */
 export function gqlClearTokens(reply: FastifyReply) {
   gqlClearCookieSafe(reply, accessToken);
   gqlClearCookieSafe(reply, refreshToken);

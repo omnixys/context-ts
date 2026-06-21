@@ -8,3 +8,4 @@ export * from './parse-client-info.util.js';
 export * from './get-locale.util.js';
 export * from './set-cookie-gql.util.js';
 export * from './normalize-ip.util.js';
+export * from './resolve-geo-location.util.js';

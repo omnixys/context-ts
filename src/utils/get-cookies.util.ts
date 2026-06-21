@@ -19,6 +19,10 @@ export function getCookies(
  * @param maxAgeMs - The cookie lifetime in milliseconds.
  * @returns Express-compatible {@link CookieOptions}.
  */
+/**
+ * @deprecated Cookie security policy is owned by `@omnixys/security`. This
+ * compatibility helper will remain available until the next major version.
+ */
 export const cookieOpts = (maxAgeMs?: number) => ({
   httpOnly: true,
   secure: isProd,

@@ -11,6 +11,7 @@ import type { ExecutionContext } from '@nestjs/common';
  * @param value - The cookie value.
  * @param opts - Additional cookie options.
  */
+/** @deprecated Use the security package's cookie services for policy-controlled cookies. */
 export function httpSetCookieSafe(
   context: ExecutionContext,
   name: string,
@@ -30,6 +31,7 @@ export function httpSetCookieSafe(
  * @param res - Express response object.
  * @param name - The cookie name to remove.
  */
+/** @deprecated Use the security package's cookie services for policy-controlled cookies. */
 export function httpClearCookieSafe(
   context: ExecutionContext,
   name: string,
@@ -41,6 +43,10 @@ export function httpClearCookieSafe(
   reply.clearCookie(name, cookieOpts());
 }
 
+/**
+ * @deprecated Use `TokenCookieService.setTokens()` from `@omnixys/security`.
+ * This legacy API writes one value into both token cookies.
+ */
 export function httpSetTokens(
   context: ExecutionContext,
   value: string,
@@ -51,6 +57,7 @@ export function httpSetTokens(
   httpSetCookieSafe(context, refreshToken, value, maxAgeMs);
 }
 
+/** @deprecated Use `TokenCookieService.clearTokens()` from `@omnixys/security`. */
 export function httpClearTokens(context: ExecutionContext) {
   httpClearCookieSafe(context, accessToken);
   httpClearCookieSafe(context, refreshToken);

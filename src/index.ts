@@ -5,3 +5,7 @@ export * from './types/index.js';
 export * from './utils/index.js';
 
 export * from './interceptor/index.js';
+
+export * from './resolvers/index.js';
+
+export * from './module/index.js';

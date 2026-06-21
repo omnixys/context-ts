@@ -82,7 +82,7 @@ GraphQL support requires a context object containing:
 ```ts
 {
   req: FastifyRequest
-  res: FastifyReply
+  reply: FastifyReply
 }
 ```
 
@@ -90,8 +90,48 @@ Example:
 
 ```ts
 GraphQLModule.forRoot({
-  context: ({ req, res }) => ({ req, res })
+  context: ({ req, reply }) => ({ req, reply })
 })
+```
+
+---
+
+# Canonical module setup
+
+`ContextModule` starts the async context scope in middleware, before NestJS
+guards run, and enriches it after authentication in the global interceptor.
+
+```ts
+import {
+  AddressListTrustedProxyPolicy,
+  ContextModule,
+} from '@omnixys/context'
+
+@Module({
+  imports: [
+    ContextModule.forRoot({
+      trustedProxyPolicy: new AddressListTrustedProxyPolicy([
+        '10.0.0.8',
+      ]),
+      tenant: {
+        trustedHostSuffixes: ['app.omnixys.com'],
+      },
+    }),
+  ],
+})
+export class AppModule {}
+```
+
+Forwarded client and tenant headers are ignored unless the immediate peer is
+trusted. Use `ContextAccessor.get()` for optional access and
+`ContextAccessor.getOrThrow()` where an active scope is required.
+
+```ts
+const context = ContextAccessor.getOrThrow()
+context.requestId
+context.correlationId
+context.principal?.actorId
+context.tenant?.tenantId
 ```
 
 ---
@@ -160,6 +200,10 @@ const headers = getHeaders(context)
 ## getIp
 
 Returns the best available client IP.
+
+This is a legacy compatibility utility and reads forwarding headers directly.
+New code should read `ContextAccessor.get()?.client.ip`, which is populated by
+the configured trusted-proxy policy.
 
 The resolver checks in order:
 

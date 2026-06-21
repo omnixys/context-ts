@@ -2,9 +2,9 @@ import { getHeaders } from '../utils/get-headers.util.js';
 import { getIp } from '../utils/get-ip.util.js';
 import { getLocale } from '../utils/get-locale.util.js';
 import { parseClientInfo } from '../utils/parse-client-info.util.js';
+import { resolveGeoLocation } from '../utils/resolve-geo-location.util.js';
 import { createParamDecorator, type ExecutionContext } from '@nestjs/common';
 import type { ClientContext } from '@omnixys/shared';
-import geoip from 'geoip-lite';
 
 export const ClientInfo = createParamDecorator(
   (_data: unknown, context: ExecutionContext): ClientContext => {
@@ -20,8 +20,7 @@ export const ClientInfo = createParamDecorator(
     const locale = getLocale(context);
 
     const ipAddress = getIp(context);
-    const geo = ipAddress ? geoip.lookup(ipAddress) : null;
-    const location = geo ? `${geo.city}, ${geo.country}` : 'Unknown location';
+    const location = resolveGeoLocation(ipAddress);
 
     return parseClientInfo(locale, location, userAgent, ipAddress);
   },

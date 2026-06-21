@@ -3,6 +3,7 @@
  * Decouples internal utilities from Fastify/Express specifics.
  */
 
+import type { PrincipalContext } from './principal-context.type.js';
 import type { AuthUser } from '@omnixys/shared';
 
 export interface OmnixysHeaders {
@@ -29,6 +30,9 @@ export interface OmnixysRequest {
   socket?: OmnixysSocket;
 
   user?: AuthUser;
+
+  /** Verified principal metadata supplied by the security integration. */
+  contextPrincipal?: PrincipalContext;
 
   /**
    * Raw request reference (Fastify / Express / etc.)
