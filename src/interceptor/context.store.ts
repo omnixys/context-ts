@@ -41,6 +41,20 @@ export class ContextAccessor {
     return current;
   }
 
+  /**
+   * Additively replaces metadata in the active scope while preserving the
+   * legacy `RequestContext` view and the canonical snapshot view.
+   */
+  static update(patch: Partial<RequestContext>): ContextSnapshot {
+    const current = contextStorage.getStore();
+    if (!current) throw new ContextUnavailableError();
+
+    const merged = mergeRequestContext(current, patch);
+    const snapshot = normalizeLegacyContext(merged);
+    contextStorage.enterWith(createCompatibilityContext(merged, snapshot));
+    return snapshot;
+  }
+
   static run<T>(ctx: RequestContext, fn: () => T): T;
   static run<T>(ctx: ContextSnapshot, fn: () => T): T;
   static run<T>(ctx: RequestContext | ContextSnapshot, fn: () => T): T {
@@ -210,4 +224,147 @@ function createCompatibilityContext(
   });
 
   return compatibilityContext;
+}
+
+function mergeRequestContext(
+  current: RequestContext,
+  patch: Partial<RequestContext>,
+): RequestContext {
+  const principalFieldsChanged = hasAnyOwnProperty(patch, [
+    'actorId',
+    'userId',
+    'subject',
+    'roles',
+    'sessionId',
+    'authStrength',
+  ]);
+  const tenantIdChanged = Object.hasOwn(patch, 'tenantId');
+  const clientFieldsChanged = hasAnyOwnProperty(patch, [
+    'ip',
+    'userAgent',
+    'locale',
+    'timezone',
+    'deviceId',
+    'country',
+    'region',
+    'city',
+    'browser',
+    'os',
+    'deviceType',
+  ]);
+  const traceFieldsChanged = hasAnyOwnProperty(patch, ['traceId', 'spanId']);
+  const transportFieldsChanged = hasAnyOwnProperty(patch, [
+    'transportType',
+    'route',
+    'operation',
+  ]);
+
+  return {
+    ...current,
+    ...patch,
+    principal:
+      patch.principal ??
+      (principalFieldsChanged
+        ? mergePrincipalContext(current, patch)
+        : current.principal),
+    tenant:
+      patch.tenant ??
+      (tenantIdChanged ? mergeTenantContext(current, patch) : current.tenant),
+    client:
+      patch.client ??
+      (clientFieldsChanged
+        ? mergeClientMetadata(current, patch)
+        : current.client),
+    trace:
+      patch.trace ??
+      (traceFieldsChanged ? mergeTraceMetadata(current, patch) : current.trace),
+    transport:
+      patch.transport ??
+      (transportFieldsChanged
+        ? mergeTransportMetadata(current, patch)
+        : current.transport),
+  };
+}
+
+function mergePrincipalContext(
+  current: RequestContext,
+  patch: Partial<RequestContext>,
+): PrincipalContext | undefined {
+  const subject =
+    patch.subject ??
+    current.principal?.subject ??
+    current.subject ??
+    patch.userId ??
+    current.principal?.userId ??
+    current.userId ??
+    patch.actorId ??
+    current.principal?.actorId ??
+    current.actorId;
+  if (!subject) return undefined;
+
+  return {
+    ...current.principal,
+    subject,
+    actorId: patch.actorId ?? current.principal?.actorId ?? current.actorId,
+    userId: patch.userId ?? current.principal?.userId ?? current.userId,
+    roles: patch.roles ?? current.principal?.roles ?? current.roles ?? [],
+    sessionId:
+      patch.sessionId ?? current.principal?.sessionId ?? current.sessionId,
+    authStrength:
+      patch.authStrength ??
+      current.principal?.authStrength ??
+      current.authStrength,
+  };
+}
+
+function mergeTenantContext(
+  current: RequestContext,
+  patch: Partial<RequestContext>,
+): TenantContext | undefined {
+  const tenantId = patch.tenantId ?? current.tenantId;
+  if (!tenantId) return undefined;
+  if (current.tenant?.tenantId === tenantId) return current.tenant;
+
+  return { tenantId, source: 'configured-default', verified: false };
+}
+
+function mergeClientMetadata(
+  current: RequestContext,
+  patch: Partial<RequestContext>,
+): ClientMetadata {
+  const merged = { ...current, ...patch, client: undefined };
+  return createLegacyClient(merged);
+}
+
+function mergeTraceMetadata(
+  current: RequestContext,
+  patch: Partial<RequestContext>,
+): TraceMetadata | undefined {
+  const traceId = patch.traceId ?? current.trace?.traceId ?? current.traceId;
+  const spanId = patch.spanId ?? current.trace?.spanId ?? current.spanId;
+  return traceId || spanId ? { traceId, spanId } : undefined;
+}
+
+function mergeTransportMetadata(
+  current: RequestContext,
+  patch: Partial<RequestContext>,
+): TransportMetadata {
+  return {
+    ...current.transport,
+    type:
+      patch.transportType ??
+      current.transport?.type ??
+      current.transportType ??
+      'internal',
+    route: patch.route ?? current.transport?.route ?? current.route,
+    operation:
+      patch.operation ?? current.transport?.operation ?? current.operation,
+  };
+}
+
+function hasAnyOwnProperty(
+  value: object,
+  keys: readonly (keyof RequestContext)[],
+): boolean {
+  return keys.some((key) => Object.hasOwn(value, key));
 }

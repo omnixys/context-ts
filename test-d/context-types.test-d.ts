@@ -48,6 +48,7 @@ const legacyContext: RequestContext = {
 ContextAccessor.run(legacyContext, () => ContextAccessor.current());
 ContextAccessor.get();
 ContextAccessor.getOrThrow();
+ContextAccessor.update({ correlationId: 'correlation-2' });
 ContextModule.forRoot({});
 ContextModule.forRootAsync({
   inject: ['CONFIG'],

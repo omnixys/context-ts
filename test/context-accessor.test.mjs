@@ -101,3 +101,24 @@ test('normalizes legacy direct contextStorage usage', () => {
     assert.equal(snapshot.correlationId, 'raw-storage');
   });
 });
+
+test('updates canonical and legacy views within the active scope', () => {
+  ContextAccessor.run({ requestId: 'update' }, () => {
+    const updated = ContextAccessor.update({
+      correlationId: 'correlation-update',
+      userId: 'user-update',
+      tenantId: 'tenant-update',
+      traceId: 'trace-update',
+      spanId: 'span-update',
+    });
+
+    assert.equal(updated.correlationId, 'correlation-update');
+    assert.equal(updated.principal?.userId, 'user-update');
+    assert.equal(updated.tenant?.tenantId, 'tenant-update');
+    assert.equal(updated.trace?.traceId, 'trace-update');
+    assert.equal(ContextAccessor.current()?.userId, 'user-update');
+    assert.equal(ContextAccessor.getOrThrow().trace?.spanId, 'span-update');
+  });
+
+  assert.equal(ContextAccessor.get(), undefined);
+});
