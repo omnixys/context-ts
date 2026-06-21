@@ -3,8 +3,8 @@ import { getIp } from '../utils/get-ip.util.js';
 import { getLocale } from '../utils/get-locale.util.js';
 import { parseClientInfo } from '../utils/parse-client-info.util.js';
 import { resolveGeoLocation } from '../utils/resolve-geo-location.util.js';
+import type { ClientContext } from '../types/client-context.type.js';
 import { createParamDecorator, type ExecutionContext } from '@nestjs/common';
-import type { ClientContext } from '@omnixys/shared';
 
 export const ClientInfo = createParamDecorator(
   (_data: unknown, context: ExecutionContext): ClientContext => {

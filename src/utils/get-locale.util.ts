@@ -1,4 +1,4 @@
-import { Locale } from '@omnixys/shared';
+import { Locale } from '@omnixys/contracts';
 import { getRequest } from './get-request.util.js';
 import type { ExecutionContext } from '@nestjs/common';
 
@@ -12,7 +12,7 @@ export function getLocale(context: ExecutionContext): Locale {
   }
   const payload = (req.cookies?.locale ??
     req.headers['accept-language']?.toString().split(',')[0] ??
-    'en-US') as Locale
+    'en-US') as Locale;
 
   return payload;
 }
