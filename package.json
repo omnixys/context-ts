@@ -15,6 +15,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.js"
+    },
+    "./accessor": {
+      "types": "./dist/accessor.d.ts",
+      "import": "./dist/accessor.js",
+      "require": "./dist/accessor.js"
     }
   },
   "sideEffects": false,
