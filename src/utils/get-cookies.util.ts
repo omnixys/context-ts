@@ -2,15 +2,16 @@ import type { ExecutionContext } from '@nestjs/common';
 import type { FastifyRequest } from 'fastify';
 import process from 'node:process';
 
-import { getRequest } from './get-request.util.js';
+import { getOptionalRequest, getRequest } from './get-request.util.js';
 
 const isProd = process.env.NODE_ENV === 'production';
 
 export function getCookies(
   context: ExecutionContext,
 ): FastifyRequest['cookies'] {
-  const req = getRequest(context);
-  return req.cookies ?? {};
+const req = getOptionalRequest(context);
+
+return req?.cookies ?? {};
 }
 
 /**

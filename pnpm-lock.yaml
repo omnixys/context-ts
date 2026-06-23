@@ -37,11 +37,8 @@ importers:
         specifier: ^13.2.4
         version: 13.2.4(@nestjs/common@11.1.16(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.16(@nestjs/common@11.1.16(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2))(graphql@16.13.2)(reflect-metadata@0.2.2)
       '@omnixys/contracts':
-        specifier: file:../contracts
-        version: file:../contracts
-      '@omnixys/shared':
-        specifier: ^1.0.0
-        version: 1.0.0(@nestjs/common@11.1.16(reflect-metadata@0.2.2)(rxjs@7.8.2))
+        specifier: ^2.0.0
+        version: 2.0.0(@nestjs/common@11.1.16(reflect-metadata@0.2.2)(rxjs@7.8.2))
       '@semantic-release/changelog':
         specifier: ^6.0.3
         version: 6.0.3(semantic-release@25.0.3(typescript@5.9.3))
@@ -427,14 +424,11 @@ packages:
   '@octokit/types@16.0.0':
     resolution: {integrity: sha512-sKq+9r1Mm4efXW1FCk7hFSeJo4QKreL/tTbR0rz/qx/r1Oa2VV83LTA/H/MuCOX7uCIJmQVRKBcbmWoySjAnSg==}
 
-  '@omnixys/contracts@file:../contracts':
-    resolution: {directory: ../contracts, type: directory}
+  '@omnixys/contracts@2.0.0':
+    resolution: {integrity: sha512-QP42DZE7SJQcLjOnygGPAFYhEUB/u6cnYQU2uYOz9kJGye30c/gXenHvYz6Ln7IR287SJXPEKTFUhHVJD+Uovg==, tarball: https://npm.pkg.github.com/download/@omnixys/contracts/2.0.0/cc538357d37fcf19c2294955d858bc97fdf551f0}
     engines: {node: '>=20'}
-
-  '@omnixys/shared@1.0.0':
-    resolution: {integrity: sha512-ntuUmoRuj/HOUSV2DA+XjFsDEn3DTb1x5iFcFuZyEBjH5LeOpRQE/stl4/MfvOcY6rYHswzmrtFRbTInHeD/1w==, tarball: https://npm.pkg.github.com/download/@omnixys/shared/1.0.0/1ca22dfb8aedf52cf6d3f4b6065ab846d2540192}
     peerDependencies:
-      '@nestjs/common': ^11.0.0
+      '@nestjs/common': ^11.1.27
 
   '@pinojs/redact@0.4.0':
     resolution: {integrity: sha512-k2ENnmBugE/rzQfEcdWHcCY+/FM3VLzH9cYEsbdsoqrvzAKRhUZeRNhAZvB8OitQJ1TBed3yqWtdjzS6wJKBwg==}
@@ -785,9 +779,6 @@ packages:
   dargs@8.1.0:
     resolution: {integrity: sha512-wAV9QHOsNbwnWdNW2FYvE1P56wtgSbM+3SZcdGiWQILwVjACCXDCI3Ai8QlCjMDB8YK5zySiXZYBiwGmNY3lnw==}
     engines: {node: '>=12'}
-
-  dataloader@2.2.3:
-    resolution: {integrity: sha512-y2krtASINtPFS1rSDjacrFgn1dcUuoREVabwlOGOe4SdxenREqwjwjElAdwvbGM7kgZz9a3KVicWR7vcz8rnzA==}
 
   debug@4.4.3:
     resolution: {integrity: sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==}
@@ -1219,9 +1210,6 @@ packages:
   jiti@2.6.1:
     resolution: {integrity: sha512-ekilCSN1jwRvIbgeg/57YFh8qQDNbwDb9xT/qu2DAHbFFZUicIl4ygVaAvzveMhMVr3LnpSKTNnwt8PoOfmKhQ==}
     hasBin: true
-
-  jose@6.2.2:
-    resolution: {integrity: sha512-d7kPDd34KO/YnzaDOlikGpOurfF0ByC2sEV4cANCtdqLlTfBlw2p14O/5d/zv40gJPbIQxfES3nSx1/oYNyuZQ==}
 
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
@@ -2553,15 +2541,10 @@ snapshots:
     dependencies:
       '@octokit/openapi-types': 27.0.0
 
-  '@omnixys/contracts@file:../contracts':
-    dependencies:
-      zod: 4.4.3
-
-  '@omnixys/shared@1.0.0(@nestjs/common@11.1.16(reflect-metadata@0.2.2)(rxjs@7.8.2))':
+  '@omnixys/contracts@2.0.0(@nestjs/common@11.1.16(reflect-metadata@0.2.2)(rxjs@7.8.2))':
     dependencies:
       '@nestjs/common': 11.1.16(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      dataloader: 2.2.3
-      jose: 6.2.2
+      zod: 4.4.3
 
   '@pinojs/redact@0.4.0': {}
 
@@ -2946,8 +2929,6 @@ snapshots:
       type-fest: 1.4.0
 
   dargs@8.1.0: {}
-
-  dataloader@2.2.3: {}
 
   debug@4.4.3:
     dependencies:
@@ -3369,8 +3350,6 @@ snapshots:
   java-properties@1.0.2: {}
 
   jiti@2.6.1: {}
-
-  jose@6.2.2: {}
 
   js-tokens@4.0.0: {}
 

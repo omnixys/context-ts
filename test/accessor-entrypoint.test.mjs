@@ -13,3 +13,11 @@ test('lightweight accessor entrypoint exposes canonical context without transpor
     assert.equal(ContextAccessor.getOrThrow().requestId, 'request-accessor');
   });
 });
+
+test('isActive() reflects whether a scope exists', () => {
+  assert.equal(ContextAccessor.isActive(), false);
+  ContextAccessor.run({ requestId: 'is-active' }, () => {
+    assert.equal(ContextAccessor.isActive(), true);
+  });
+  assert.equal(ContextAccessor.isActive(), false);
+});

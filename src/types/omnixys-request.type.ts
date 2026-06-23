@@ -3,8 +3,8 @@
  * Decouples internal utilities from Fastify/Express specifics.
  */
 
+import type { AuthUser } from '@omnixys/contracts';
 import type { PrincipalContext } from './principal-context.type.js';
-import type { AuthUser } from '@omnixys/shared';
 
 export interface OmnixysHeaders {
   [key: string]: string | string[] | undefined;

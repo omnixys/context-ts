@@ -42,6 +42,14 @@ export class ContextAccessor {
   }
 
   /**
+   * Safely resolves whether the caller is running inside an active context
+   * scope without triggering legacy-normalisation.
+   */
+  static isActive(): boolean {
+    return contextStorage.getStore() !== undefined;
+  }
+
+  /**
    * Additively replaces metadata in the active scope while preserving the
    * legacy `RequestContext` view and the canonical snapshot view.
    */

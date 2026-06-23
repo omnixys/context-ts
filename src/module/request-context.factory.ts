@@ -18,13 +18,13 @@ export interface ContextRequestLike {
 }
 
 export function createRequestContextSnapshot(
-  request: ContextRequestLike,
+  request: ContextRequestLike | undefined,
   options: ContextModuleOptions,
   requestIdResolver: RequestIdResolver,
   correlationIdResolver: CorrelationIdResolver,
   clientIpResolver: ClientIpResolver,
 ): ContextSnapshot {
-  const headers = request.headers ?? {};
+  const headers = request?.headers ?? {};
   const requestIdHeader = options.requestIdHeader ?? 'x-request-id';
   const correlationIdHeader = options.correlationIdHeader ?? 'x-correlation-id';
   const requestId = requestIdResolver.resolve(headers[requestIdHeader]);
@@ -32,7 +32,7 @@ export function createRequestContextSnapshot(
     headers[correlationIdHeader],
     requestId,
   );
-  const peerAddress = request.socket?.remoteAddress ?? request.ip;
+  const peerAddress = request?.socket?.remoteAddress ?? request?.ip;
   const userAgent = firstString(headers['user-agent']);
 
   return {
@@ -50,10 +50,10 @@ export function createRequestContextSnapshot(
     },
     transport: {
       type: 'http',
-      method: request.method,
-      route: request.routeOptions?.url ?? request.url,
-      protocol: request.protocol,
-      host: firstString(headers.host) ?? request.hostname,
+      method: request?.method,
+      route: request?.routeOptions?.url ?? request?.url,
+      protocol: request?.protocol,
+      host: firstString(headers.host) ?? request?.hostname,
     },
   };
 }

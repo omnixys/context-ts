@@ -1,9 +1,13 @@
-import { getRequest } from './get-request.util.js';
+import { getOptionalRequest, getRequest } from './get-request.util.js';
 import { normalizeIp } from './normalize-ip.util.js';
 import type { ExecutionContext } from '@nestjs/common';
 
 export function getIp(context: ExecutionContext): string | undefined {
-  const req = getRequest(context);
+const req = getOptionalRequest(context);
+
+if (!req) {
+  return undefined;
+}
 
   // 1️⃣ Cloudflare (höchste Priorität)
   const cfIp = req.headers['cf-connecting-ip'];
@@ -31,5 +35,5 @@ export function getIp(context: ExecutionContext): string | undefined {
   // 4️⃣ Fallbacks
   const fallback = req.ip || req.socket?.remoteAddress || 'unknown';
 
-  return normalizeIp(fallback);
+  return fallback ? normalizeIp(fallback) : undefined;
 }

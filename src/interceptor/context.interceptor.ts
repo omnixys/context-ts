@@ -126,16 +126,16 @@ export class ContextInterceptor implements NestInterceptor {
     tenantResolver: TenantResolver,
     trustedProxyPolicy: TrustedProxyPolicy,
   ): Promise<ContextSnapshot> {
-    const headers = request.headers;
+    const headers = request?.headers;
     const principal = await principalResolver.resolve({
       verifiedPrincipal: getVerifiedPrincipal(request),
     });
-    const peerAddress = request.socket?.remoteAddress ?? request.ip;
+    const peerAddress = request?.socket?.remoteAddress ?? request?.ip;
     const tenant = tenantResolver.resolve({
       principal,
-      headerTenantId: headers[this.options?.tenantHeader ?? 'x-tenant-id'],
+      headerTenantId: headers ? headers[this.options?.tenantHeader ?? 'x-tenant-id'] : undefined,
       headerTrusted: trustedProxyPolicy.isTrusted(peerAddress),
-      host: firstString(headers.host),
+      host: firstString(headers?.host),
     });
     const type = executionContext.getType<string>();
 
@@ -146,7 +146,7 @@ export class ContextInterceptor implements NestInterceptor {
       transport: {
         ...base.transport,
         type: type === 'graphql' ? 'graphql' : 'http',
-        route: request.routeOptions?.url ?? request.url ?? base.transport.route,
+        route: request?.routeOptions?.url ?? request?.url ?? base.transport.route,
         operation: executionContext.getHandler?.()?.name,
       },
     };
@@ -158,7 +158,7 @@ export class ContextInterceptor implements NestInterceptor {
   ): Observable<unknown> {
     const request = getRequest(context);
     const headers = getHeaders(context);
-    const user = request.user;
+    const user = request?.user;
     const requestIdHeader = headers['x-request-id'];
     const requestId =
       typeof requestIdHeader === 'string'
