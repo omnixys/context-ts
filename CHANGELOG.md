@@ -3,6 +3,19 @@
 All notable changes in this project will be documented in this file.
 
 
+## [2.0.0](https://github.com/omnixys/context/compare/v1.0.0...v2.0.0) (2026-06-23)
+
+### Context
+
+* **Context:** declare runtime peer dependencies and align request types ([](https://github.com/omnixys/context/commit/241641397a72a62270cc8edd2466006474a99096))
+* **Context:** add lightweight accessor entrypoint ([](https://github.com/omnixys/context/commit/fec1e4cbb33f0afc3e87c7a4e7f762ce48e7dbda))
+* **Context:** implement P0 context migration and runtime hardening ([](https://github.com/omnixys/context/commit/1dece431d510e289fbda15613cc1dafbee5c56c7))
+* **Context:** own client metadata compatibility type ([](https://github.com/omnixys/context/commit/43c24ec48bc514c15a0c0a1314c8024a1fc45692))
+
+### Observability
+
+* **Observability:** migrate P0 request context ownership ([](https://github.com/omnixys/context/commit/96f371c66367b37ac7be9611400f63009a671dd3))
+
 ## 1.0.0 (2026-04-15)
 
 ### ⚠ BREAKING CHANGE
