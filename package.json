@@ -1,6 +1,6 @@
 {
   "name": "@omnixys/context",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Shared request context utilities and decorators for Omnixys NestJS microservices.",
   "license": "GPL-3.0-or-later",
   "type": "module",

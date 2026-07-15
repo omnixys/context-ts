@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [3.0.0](https://github.com/omnixys/context/compare/v2.0.0...v3.0.0) (2026-07-15)
+
+### Update
+
+* **Update:** update package ([](https://github.com/omnixys/context/commit/800976c4540be5af73db39c623aadef5bd843f4a))
+
 ## [2.0.0](https://github.com/omnixys/context/compare/v1.0.0...v2.0.0) (2026-06-23)
 
 ### Context
