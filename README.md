@@ -1,4 +1,4 @@
-# @omnixys/context
+# @omnixys/context-ts
 
 Shared request context utilities and decorators for Omnixys backend services.
 
@@ -27,7 +27,7 @@ request-level information:
 - client IP
 - locale
 
-Instead of duplicating logic across services, `@omnixys/context` centralizes
+Instead of duplicating logic across services, `@omnixys/context-ts` centralizes
 all request context handling.
 
 Typical consumers include:
@@ -57,13 +57,13 @@ Typical consumers include:
 Inside the Omnixys monorepo the package can be used directly:
 
 ```ts
-import { ClientIp } from '@omnixys/context'
+import { ClientIp } from '@omnixys/context-ts'
 ````
 
 If published as a package:
 
 ```
-pnpm add @omnixys/context
+pnpm add @omnixys/context-ts
 ```
 
 ---
@@ -105,7 +105,7 @@ guards run, and enriches it after authentication in the global interceptor.
 import {
   AddressListTrustedProxyPolicy,
   ContextModule,
-} from '@omnixys/context'
+} from '@omnixys/context-ts'
 
 @Module({
   imports: [
@@ -154,7 +154,7 @@ They are typically used inside:
 Returns the Fastify request object for HTTP or GraphQL.
 
 ```ts
-import { getRequest } from '@omnixys/context'
+import { getRequest } from '@omnixys/context-ts'
 
 const req = getRequest(context)
 ```
@@ -166,7 +166,7 @@ const req = getRequest(context)
 Returns the Fastify response object.
 
 ```ts
-import { getResponse } from '@omnixys/context'
+import { getResponse } from '@omnixys/context-ts'
 
 const res = getResponse(context)
 ```
@@ -178,7 +178,7 @@ const res = getResponse(context)
 Returns request cookies.
 
 ```ts
-import { getCookies } from '@omnixys/context'
+import { getCookies } from '@omnixys/context-ts'
 
 const cookies = getCookies(context)
 ```
@@ -190,7 +190,7 @@ const cookies = getCookies(context)
 Returns request headers.
 
 ```ts
-import { getHeaders } from '@omnixys/context'
+import { getHeaders } from '@omnixys/context-ts'
 
 const headers = getHeaders(context)
 ```
@@ -213,7 +213,7 @@ The resolver checks in order:
 4. socket remote address
 
 ```ts
-import { getIp } from '@omnixys/context'
+import { getIp } from '@omnixys/context-ts'
 
 const ip = getIp(context)
 ```
@@ -231,7 +231,7 @@ Priority order:
 3. default `en-US`
 
 ```ts
-import { getLocale } from '@omnixys/context'
+import { getLocale } from '@omnixys/context-ts'
 
 const locale = getLocale(context)
 ```
@@ -250,7 +250,7 @@ controllers and resolvers.
 Returns the resolved client IP.
 
 ```ts
-import { ClientIp } from '@omnixys/context'
+import { ClientIp } from '@omnixys/context-ts'
 
 @Get()
 getProfile(@ClientIp() ip: string) {
@@ -265,7 +265,7 @@ getProfile(@ClientIp() ip: string) {
 Returns request headers.
 
 ```ts
-import { RequestHeaders } from '@omnixys/context'
+import { RequestHeaders } from '@omnixys/context-ts'
 
 @Get()
 test(@RequestHeaders() headers) {
@@ -280,7 +280,7 @@ test(@RequestHeaders() headers) {
 Returns request cookies.
 
 ```ts
-import { RequestCookies } from '@omnixys/context'
+import { RequestCookies } from '@omnixys/context-ts'
 
 @Get()
 test(@RequestCookies() cookies) {
@@ -295,7 +295,7 @@ test(@RequestCookies() cookies) {
 Returns the raw Fastify request.
 
 ```ts
-import { RequestContext } from '@omnixys/context'
+import { RequestContext } from '@omnixys/context-ts'
 
 @Get()
 test(@RequestContext() req) {
@@ -310,7 +310,7 @@ test(@RequestContext() req) {
 Returns the raw Fastify response.
 
 ```ts
-import { ResponseContext } from '@omnixys/context'
+import { ResponseContext } from '@omnixys/context-ts'
 
 @Get()
 test(@ResponseContext() res) {
@@ -327,7 +327,7 @@ import {
   ClientIp,
   RequestHeaders,
   RequestCookies
-} from '@omnixys/context'
+} from '@omnixys/context-ts'
 
 @Controller('example')
 export class ExampleController {
@@ -352,7 +352,7 @@ export class ExampleController {
 # Example — GraphQL Resolver
 
 ```ts
-import { ClientIp } from '@omnixys/context'
+import { ClientIp } from '@omnixys/context-ts'
 
 @Resolver()
 export class UserResolver {
@@ -395,7 +395,7 @@ const req = getRequest(context)
 
 ### Do not put authentication logic in this package
 
-`@omnixys/context` is **framework infrastructure only**.
+`@omnixys/context-ts` is **framework infrastructure only**.
 
 Authentication belongs in:
 
@@ -408,7 +408,7 @@ Authentication belongs in:
 # Architecture
 
 ```
-@omnixys/context
+@omnixys/context-ts
 │
 ├─ decorators
 │  ├─ client-ip.decorator.ts

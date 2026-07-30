@@ -2,7 +2,7 @@ import {
   ContextAccessor,
   ContextUnavailableError,
   contextStorage,
-} from '@omnixys/context/accessor';
+} from '@omnixys/context-ts/accessor';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
