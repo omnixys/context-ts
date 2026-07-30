@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [3.0.2](https://github.com/omnixys/context-ts/compare/v3.0.1...v3.0.2) (2026-07-30)
+
+### Deps
+
+* **Deps:** fix imports ([](https://github.com/omnixys/context-ts/commit/aecafb5d3abd49ce340dba11ade6dc87e2307451))
+
 ## [3.0.1](https://github.com/omnixys/context-ts/compare/v3.0.0...v3.0.1) (2026-07-30)
 
 ### Rename
