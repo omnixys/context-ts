@@ -32,7 +32,7 @@ export function gqlClearCookieSafe(reply: FastifyReply, name: string): void {
 }
 
 /**
- * @deprecated Use `TokenCookieService.setTokens()` from `@omnixys/security`.
+ * @deprecated Use `TokenCookieService.setTokens()` from `@omnixys/security-ts`.
  * This legacy API writes one value into both token cookies.
  */
 export function gqlSetTokens(
@@ -45,7 +45,7 @@ export function gqlSetTokens(
   gqlSetCookieSafe(reply, refreshToken, value, maxAgeMs);
 }
 
-/** @deprecated Use `TokenCookieService.clearTokens()` from `@omnixys/security`. */
+/** @deprecated Use `TokenCookieService.clearTokens()` from `@omnixys/security-ts`. */
 export function gqlClearTokens(reply: FastifyReply) {
   gqlClearCookieSafe(reply, accessToken);
   gqlClearCookieSafe(reply, refreshToken);

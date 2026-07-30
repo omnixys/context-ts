@@ -21,7 +21,7 @@ return req?.cookies ?? {};
  * @returns Express-compatible {@link CookieOptions}.
  */
 /**
- * @deprecated Cookie security policy is owned by `@omnixys/security`. This
+ * @deprecated Cookie security policy is owned by `@omnixys/security-ts`. This
  * compatibility helper will remain available until the next major version.
  */
 export const cookieOpts = (maxAgeMs?: number) => ({

@@ -44,7 +44,7 @@ export function httpClearCookieSafe(
 }
 
 /**
- * @deprecated Use `TokenCookieService.setTokens()` from `@omnixys/security`.
+ * @deprecated Use `TokenCookieService.setTokens()` from `@omnixys/security-ts`.
  * This legacy API writes one value into both token cookies.
  */
 export function httpSetTokens(
@@ -57,7 +57,7 @@ export function httpSetTokens(
   httpSetCookieSafe(context, refreshToken, value, maxAgeMs);
 }
 
-/** @deprecated Use `TokenCookieService.clearTokens()` from `@omnixys/security`. */
+/** @deprecated Use `TokenCookieService.clearTokens()` from `@omnixys/security-ts`. */
 export function httpClearTokens(context: ExecutionContext) {
   httpClearCookieSafe(context, accessToken);
   httpClearCookieSafe(context, refreshToken);
