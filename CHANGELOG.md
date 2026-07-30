@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [3.0.1](https://github.com/omnixys/context-ts/compare/v3.0.0...v3.0.1) (2026-07-30)
+
+### Rename
+
+* **Rename:** rename repo ([](https://github.com/omnixys/context-ts/commit/3f37b3a1deb303e10f1f2e24c16886bb70739d5a))
+
 ## [3.0.0](https://github.com/omnixys/context/compare/v2.0.0...v3.0.0) (2026-07-15)
 
 ### Update
