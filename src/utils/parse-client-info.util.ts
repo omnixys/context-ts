@@ -1,5 +1,5 @@
 import type { ClientContext } from '../types/client-context.type.js';
-import type { Locale } from '@omnixys/contracts';
+import type { Locale } from '@omnixys/contracts-ts';
 import { UAParser } from 'ua-parser-js';
 
 export function parseClientInfo(

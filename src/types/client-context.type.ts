@@ -1,4 +1,4 @@
-import type { Locale } from '@omnixys/contracts';
+import type { Locale } from '@omnixys/contracts-ts';
 
 /**
  * Legacy flattened client metadata returned by ClientInfo.

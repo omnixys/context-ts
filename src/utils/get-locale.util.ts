@@ -1,4 +1,4 @@
-import { Locale } from '@omnixys/contracts';
+import { Locale } from '@omnixys/contracts-ts';
 import { getOptionalRequest, getRequest } from './get-request.util.js';
 import type { ExecutionContext } from '@nestjs/common';
 
