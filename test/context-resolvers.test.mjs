@@ -1,5 +1,6 @@
 import {
   AddressListTrustedProxyPolicy,
+  CidrTrustedProxyPolicy,
   DefaultClientIpResolver,
   DefaultCorrelationIdResolver,
   DefaultPrincipalResolver,
@@ -7,6 +8,7 @@ import {
   DefaultTenantResolver,
   DenyAllTrustedProxyPolicy,
   TenantResolutionConflictError,
+  trustedProxyPolicyFromAddresses,
 } from '../dist/index.js';
 import assert from 'node:assert/strict';
 import test from 'node:test';
@@ -82,6 +84,45 @@ test('client IP accepts forwarded metadata only from a trusted peer', () => {
     }),
     '192.0.2.10',
   );
+});
+
+test('CIDR trusted proxy policy matches exact addresses and ranges', () => {
+  const policy = new CidrTrustedProxyPolicy([
+    '10.0.0.8',
+    '172.28.0.0/16',
+    '2001:db8::/32',
+  ]);
+
+  assert.equal(policy.isTrusted('10.0.0.8'), true);
+  assert.equal(policy.isTrusted('172.28.0.1'), true);
+  assert.equal(policy.isTrusted('172.28.255.255'), true);
+  assert.equal(policy.isTrusted('2001:db8::1'), true);
+  assert.equal(policy.isTrusted('10.0.0.9'), false);
+  assert.equal(policy.isTrusted('172.29.0.1'), false);
+  assert.equal(policy.isTrusted('2001:db9::1'), false);
+  assert.equal(policy.isTrusted('203.0.113.5'), false);
+  assert.equal(policy.isTrusted('not-an-ip'), false);
+  assert.equal(policy.isTrusted(undefined), false);
+});
+
+test('CIDR trusted proxy policy normalizes IPv4-mapped peers', () => {
+  const policy = new CidrTrustedProxyPolicy(['10.0.0.0/8']);
+
+  assert.equal(policy.isTrusted('::ffff:10.0.0.8'), true);
+});
+
+test('trusted proxy factory yields deny-all for empty input', () => {
+  assert.equal(trustedProxyPolicyFromAddresses(undefined).isTrusted('10.0.0.8'), false);
+  assert.equal(trustedProxyPolicyFromAddresses('').isTrusted('10.0.0.8'), false);
+  assert.equal(trustedProxyPolicyFromAddresses([]).isTrusted('10.0.0.8'), false);
+});
+
+test('trusted proxy factory parses comma-separated addresses and ranges', () => {
+  const policy = trustedProxyPolicyFromAddresses('10.0.0.8, 172.28.0.0/16');
+
+  assert.equal(policy.isTrusted('10.0.0.8'), true);
+  assert.equal(policy.isTrusted('172.28.0.5'), true);
+  assert.equal(policy.isTrusted('10.0.0.9'), false);
 });
 
 test('principal resolver accepts only normalized verified metadata', () => {
