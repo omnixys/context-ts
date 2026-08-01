@@ -3,6 +3,20 @@
 All notable changes in this project will be documented in this file.
 
 
+## [3.1.0](https://github.com/omnixys/context-ts/compare/v3.0.2...v3.1.0) (2026-08-01)
+
+### Name
+
+* **Name:** update package name ([](https://github.com/omnixys/context-ts/commit/05a22fcb4a81dc86b0076d19145595fe1e907a58))
+
+### Resolvers
+
+* **Resolvers:** add CIDR-aware trusted proxy policy ([](https://github.com/omnixys/context-ts/commit/8958bc6bb1617294a57afa63d4d3ebe7badc6f9b))
+
+### Tenant
+
+* **Tenant:** verify tenants per request in ContextInterceptor ([](https://github.com/omnixys/context-ts/commit/4a84fbb1fe057b35a17c8f1e49f39f862adb62b0))
+
 ## [3.0.2](https://github.com/omnixys/context-ts/compare/v3.0.1...v3.0.2) (2026-07-30)
 
 ### Deps
