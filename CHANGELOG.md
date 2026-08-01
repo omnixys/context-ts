@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [3.1.1](https://github.com/omnixys/context-ts/compare/v3.1.0...v3.1.1) (2026-08-01)
+
+### Version
+
+* **Version:** Update package.json ([](https://github.com/omnixys/context-ts/commit/782876201695e6a5dc88ef8db721ea2a9748a3cc))
+
 ## [3.1.0](https://github.com/omnixys/context-ts/compare/v3.0.2...v3.1.0) (2026-08-01)
 
 ### Name
