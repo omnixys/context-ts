@@ -1,3 +1,7 @@
+import {
+  TenantHeaderInvalidException,
+  TenantHeaderMissingException,
+} from '../errors/tenant-request.exception.js';
 import type { ContextModuleOptions } from '../module/context-options.js';
 import {
   CONTEXT_CLIENT_IP_RESOLVER,
@@ -6,6 +10,7 @@ import {
   CONTEXT_PRINCIPAL_RESOLVER,
   CONTEXT_REQUEST_ID_RESOLVER,
   CONTEXT_TENANT_RESOLVER,
+  CONTEXT_TENANT_VERIFIER,
   CONTEXT_TRUSTED_PROXY_POLICY,
 } from '../module/context.constants.js';
 import { createRequestContextSnapshot } from '../module/request-context.factory.js';
@@ -23,10 +28,12 @@ import type { PrincipalResolver } from '../resolvers/principal.resolver.js';
 import { DefaultPrincipalResolver } from '../resolvers/principal.resolver.js';
 import type { TenantResolver } from '../resolvers/tenant.resolver.js';
 import { DefaultTenantResolver } from '../resolvers/tenant.resolver.js';
+import type { TenantVerifier } from '../resolvers/tenant-verifier.interface.js';
 import type { TrustedProxyPolicy } from '../resolvers/trusted-proxy.policy.js';
 import { DenyAllTrustedProxyPolicy } from '../resolvers/trusted-proxy.policy.js';
 import type { ContextSnapshot } from '../types/context-snapshot.type.js';
 import type { PrincipalContext } from '../types/principal-context.type.js';
+import type { TenantContext } from '../types/tenant-context.type.js';
 import { getHeaders } from '../utils/get-headers.util.js';
 import { getIp } from '../utils/get-ip.util.js';
 import { getRequest } from '../utils/get-request.util.js';
@@ -66,6 +73,9 @@ export class ContextInterceptor implements NestInterceptor {
     @Optional()
     @Inject(CONTEXT_TRUSTED_PROXY_POLICY)
     private readonly trustedProxyPolicy?: TrustedProxyPolicy,
+    @Optional()
+    @Inject(CONTEXT_TENANT_VERIFIER)
+    private readonly tenantVerifier?: TenantVerifier,
   ) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
@@ -131,12 +141,24 @@ export class ContextInterceptor implements NestInterceptor {
       verifiedPrincipal: getVerifiedPrincipal(request),
     });
     const peerAddress = request?.socket?.remoteAddress ?? request?.ip;
-    const tenant = tenantResolver.resolve({
-      principal,
-      headerTenantId: headers ? headers[this.options?.tenantHeader ?? 'x-tenant-id'] : undefined,
-      headerTrusted: trustedProxyPolicy.isTrusted(peerAddress),
-      host: firstString(headers?.host),
-    });
+    const headerTenantId = firstString(
+      headers ? headers[this.options?.tenantHeader ?? 'x-tenant-id'] : undefined,
+    );
+    const tenant = this.tenantVerifier
+      ? await this.verifyTenant(
+          principal,
+          headerTenantId,
+          peerAddress,
+          headers,
+          tenantResolver,
+          trustedProxyPolicy,
+        )
+      : tenantResolver.resolve({
+          principal,
+          headerTenantId,
+          headerTrusted: trustedProxyPolicy.isTrusted(peerAddress),
+          host: firstString(headers?.host),
+        });
     const type = executionContext.getType<string>();
 
     return {
@@ -150,6 +172,63 @@ export class ContextInterceptor implements NestInterceptor {
         operation: executionContext.getHandler?.()?.name,
       },
     };
+  }
+
+  /**
+   * Authoritative per-request tenant resolution used when a verifier is
+   * registered. Protected requests must carry a valid `x-tenant-id`; public
+   * requests fall back to the configured resolution sources and only verify
+   * that the tenant exists and is active.
+   */
+  private async verifyTenant(
+    principal: PrincipalContext | undefined,
+    headerTenantId: string | undefined,
+    peerAddress: string | undefined,
+    headers: Readonly<Record<string, unknown>> | undefined,
+    tenantResolver: TenantResolver,
+    trustedProxyPolicy: TrustedProxyPolicy,
+  ): Promise<TenantContext | undefined> {
+    if (principal) {
+      return this.verifyProtectedRequest(principal, headerTenantId);
+    }
+
+    const resolved = tenantResolver.resolve({
+      principal,
+      headerTenantId,
+      headerTrusted: trustedProxyPolicy.isTrusted(peerAddress),
+      host: firstString(headers?.host),
+    });
+    if (!resolved) return undefined;
+
+    const tenantId = validUuid(resolved.tenantId);
+    if (!tenantId) {
+      throw new TenantHeaderInvalidException({
+        tenantId: resolved.tenantId,
+        reason: 'public_tenant_not_uuid',
+      });
+    }
+    await this.tenantVerifier?.verify({ tenantId });
+
+    return { ...resolved, tenantId, verified: true };
+  }
+
+  private async verifyProtectedRequest(
+    principal: PrincipalContext,
+    headerTenantId: string | undefined,
+  ): Promise<TenantContext> {
+    if (!headerTenantId) {
+      throw new TenantHeaderMissingException({
+        subject: principal.subject,
+      });
+    }
+    const tenantId = validUuid(headerTenantId);
+    if (!tenantId) {
+      throw new TenantHeaderInvalidException({ tenantId: headerTenantId });
+    }
+
+    await this.tenantVerifier?.verify({ userId: principal.subject, tenantId });
+
+    return { tenantId, source: 'trusted-header', verified: true };
   }
 
   private interceptLegacy(
@@ -239,6 +318,13 @@ function firstString(value: unknown): string | undefined {
   if (typeof value === 'string') return value;
   if (!Array.isArray(value)) return undefined;
   return value.find((entry): entry is string => typeof entry === 'string');
+}
+
+const UUID_V4_PATTERN =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+function validUuid(value: string): string | undefined {
+  return UUID_V4_PATTERN.test(value) ? value : undefined;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

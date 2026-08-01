@@ -17,3 +17,6 @@ export const CONTEXT_PRINCIPAL_RESOLVER = Symbol.for(
 export const CONTEXT_TENANT_RESOLVER = Symbol.for(
   '@omnixys/context-ts/tenant-resolver',
 );
+export const CONTEXT_TENANT_VERIFIER = Symbol.for(
+  '@omnixys/context-ts/tenant-verifier',
+);
