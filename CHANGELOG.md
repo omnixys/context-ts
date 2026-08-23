@@ -3,6 +3,16 @@
 All notable changes in this project will be documented in this file.
 
 
+## [3.1.2](https://github.com/omnixys/context-ts/compare/v3.1.1...v3.1.2) (2026-08-23)
+
+### Agent
+
+* **Agent:** add repository development instructions ([](https://github.com/omnixys/context-ts/commit/37dbdf435e08ffa9dc10a02530c3ecc8e1905cbc))
+
+### Error
+
+* **Error:** update error handling ([](https://github.com/omnixys/context-ts/commit/9bed8a615eea89a3c833b25406adbd511f3aa392))
+
 ## [3.1.1](https://github.com/omnixys/context-ts/compare/v3.1.0...v3.1.1) (2026-08-01)
 
 ### Version
