@@ -3,6 +3,7 @@ import type {
   RequestIdResolver,
 } from '../resolvers/identifier.resolver.js';
 import type { ClientIpResolver } from '../resolvers/ip.resolver.js';
+import { getRequestTraceContext } from '../trace/request-trace-context.js';
 import type { ContextSnapshot } from '../types/context-snapshot.type.js';
 import type { ContextModuleOptions } from './context-options.js';
 
@@ -55,6 +56,7 @@ export function createRequestContextSnapshot(
       protocol: request?.protocol,
       host: firstString(headers.host) ?? request?.hostname,
     },
+    trace: getRequestTraceContext(request),
   };
 }
 

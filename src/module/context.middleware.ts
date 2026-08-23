@@ -4,6 +4,7 @@ import type {
   RequestIdResolver,
 } from '../resolvers/identifier.resolver.js';
 import type { ClientIpResolver } from '../resolvers/ip.resolver.js';
+import { setRequestContextIdentifiers } from '../trace/request-trace-context.js';
 import type { ContextModuleOptions } from './context-options.js';
 import {
   CONTEXT_CLIENT_IP_RESOLVER,
@@ -47,6 +48,7 @@ export class ContextMiddleware implements NestMiddleware {
       this.correlationIdResolver,
       this.clientIpResolver,
     );
+    setRequestContextIdentifiers(request, snapshot);
 
     setCorrelationResponseHeader(
       response,
