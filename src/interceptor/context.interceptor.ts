@@ -144,7 +144,12 @@ export class ContextInterceptor implements NestInterceptor {
     const headerTenantId = firstString(
       headers ? headers[this.options?.tenantHeader ?? 'x-tenant-id'] : undefined,
     );
-    const tenant = this.tenantVerifier
+    // Kubernetes and monitoring probes must only report the process' own
+    // health. Requiring a tenant-service round trip here turns a dependent
+    // service outage into a liveness restart loop.
+    const tenant = isHealthRequest(request)
+      ? undefined
+      : this.tenantVerifier
       ? await this.verifyTenant(
           principal,
           headerTenantId,
@@ -290,6 +295,11 @@ function getVerifiedPrincipal(request: unknown): PrincipalContext | undefined {
   return isRecord(user)
     ? (user.contextPrincipal as PrincipalContext | undefined)
     : undefined;
+}
+
+function isHealthRequest(request: ReturnType<typeof getRequest>): boolean {
+  const url = request?.url;
+  return typeof url === 'string' && url.startsWith('/health');
 }
 
 function runObservableInContext<T>(
