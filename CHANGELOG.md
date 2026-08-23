@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [3.1.3](https://github.com/omnixys/context-ts/compare/v3.1.2...v3.1.3) (2026-08-23)
+
+### Context
+
+* **Context:** retain request trace metadata ([](https://github.com/omnixys/context-ts/commit/50c78d762441497437bd390804da447b0eaf8042))
+
 ## [3.1.2](https://github.com/omnixys/context-ts/compare/v3.1.1...v3.1.2) (2026-08-23)
 
 ### Agent
