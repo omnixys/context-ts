@@ -2,6 +2,8 @@ import {
   TenantHeaderInvalidException,
   TenantHeaderMissingException,
 } from '../errors/tenant-request.exception.js';
+import { OMNIXYS_LOGGER } from '../logger.token.js';
+import type { PlatformContextLogger } from '../logger.token.js';
 import type { ContextModuleOptions } from '../module/context-options.js';
 import {
   CONTEXT_CLIENT_IP_RESOLVER,
@@ -46,7 +48,6 @@ import {
   NestInterceptor,
   Optional,
 } from '@nestjs/common';
-import { OmnixysLogger } from '@omnixys/logger-ts';
 import { randomUUID } from 'node:crypto';
 import { defer, from, Observable, switchMap } from 'rxjs';
 
@@ -79,7 +80,9 @@ export class ContextInterceptor implements NestInterceptor {
     @Optional()
     @Inject(CONTEXT_TENANT_VERIFIER)
     private readonly tenantVerifier?: TenantVerifier,
-    @Optional() private readonly logger?: OmnixysLogger,
+    @Optional()
+    @Inject(OMNIXYS_LOGGER)
+    private readonly logger?: PlatformContextLogger,
   ) {
     this.log = this.logger?.log(this.constructor.name);
   }
