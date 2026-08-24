@@ -26,9 +26,9 @@ import type { ClientIpResolver } from '../resolvers/ip.resolver.js';
 import { DefaultClientIpResolver } from '../resolvers/ip.resolver.js';
 import type { PrincipalResolver } from '../resolvers/principal.resolver.js';
 import { DefaultPrincipalResolver } from '../resolvers/principal.resolver.js';
+import type { TenantVerifier } from '../resolvers/tenant-verifier.interface.js';
 import type { TenantResolver } from '../resolvers/tenant.resolver.js';
 import { DefaultTenantResolver } from '../resolvers/tenant.resolver.js';
-import type { TenantVerifier } from '../resolvers/tenant-verifier.interface.js';
 import type { TrustedProxyPolicy } from '../resolvers/trusted-proxy.policy.js';
 import { DenyAllTrustedProxyPolicy } from '../resolvers/trusted-proxy.policy.js';
 import type { ContextSnapshot } from '../types/context-snapshot.type.js';
@@ -46,11 +46,14 @@ import {
   NestInterceptor,
   Optional,
 } from '@nestjs/common';
+import { OmnixysLogger } from '@omnixys/logger-ts';
 import { randomUUID } from 'node:crypto';
 import { defer, from, Observable, switchMap } from 'rxjs';
 
 @Injectable()
 export class ContextInterceptor implements NestInterceptor {
+  private readonly log;
+
   constructor(
     @Optional()
     @Inject(CONTEXT_OPTIONS)
@@ -76,7 +79,10 @@ export class ContextInterceptor implements NestInterceptor {
     @Optional()
     @Inject(CONTEXT_TENANT_VERIFIER)
     private readonly tenantVerifier?: TenantVerifier,
-  ) {}
+    @Optional() private readonly logger?: OmnixysLogger,
+  ) {
+    this.log = this.logger?.log(this.constructor.name);
+  }
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
     // A directly-constructed legacy interceptor has no module options. Retain
@@ -142,7 +148,9 @@ export class ContextInterceptor implements NestInterceptor {
     });
     const peerAddress = request?.socket?.remoteAddress ?? request?.ip;
     const headerTenantId = firstString(
-      headers ? headers[this.options?.tenantHeader ?? 'x-tenant-id'] : undefined,
+      headers
+        ? headers[this.options?.tenantHeader ?? 'x-tenant-id']
+        : undefined,
     );
     // Kubernetes and monitoring probes must only report the process' own
     // health. Requiring a tenant-service round trip here turns a dependent
@@ -150,20 +158,20 @@ export class ContextInterceptor implements NestInterceptor {
     const tenant = isHealthRequest(request)
       ? undefined
       : this.tenantVerifier
-      ? await this.verifyTenant(
-          principal,
-          headerTenantId,
-          peerAddress,
-          headers,
-          tenantResolver,
-          trustedProxyPolicy,
-        )
-      : tenantResolver.resolve({
-          principal,
-          headerTenantId,
-          headerTrusted: trustedProxyPolicy.isTrusted(peerAddress),
-          host: firstString(headers?.host),
-        });
+        ? await this.verifyTenant(
+            principal,
+            headerTenantId,
+            peerAddress,
+            headers,
+            tenantResolver,
+            trustedProxyPolicy,
+          )
+        : tenantResolver.resolve({
+            principal,
+            headerTenantId,
+            headerTrusted: trustedProxyPolicy.isTrusted(peerAddress),
+            host: firstString(headers?.host),
+          });
     const type = executionContext.getType<string>();
 
     return {
@@ -173,7 +181,8 @@ export class ContextInterceptor implements NestInterceptor {
       transport: {
         ...base.transport,
         type: type === 'graphql' ? 'graphql' : 'http',
-        route: request?.routeOptions?.url ?? request?.url ?? base.transport.route,
+        route:
+          request?.routeOptions?.url ?? request?.url ?? base.transport.route,
         operation: executionContext.getHandler?.()?.name,
       },
     };
@@ -207,6 +216,13 @@ export class ContextInterceptor implements NestInterceptor {
 
     const tenantId = validUuid(resolved.tenantId);
     if (!tenantId) {
+      this.log?.error(
+        'Public tenant header rejected, tenant id is not a UUID',
+        {
+          tenantId: resolved.tenantId,
+          reason: 'public_tenant_not_uuid',
+        },
+      );
       throw new TenantHeaderInvalidException({
         tenantId: resolved.tenantId,
         reason: 'public_tenant_not_uuid',
@@ -222,12 +238,21 @@ export class ContextInterceptor implements NestInterceptor {
     headerTenantId: string | undefined,
   ): Promise<TenantContext> {
     if (!headerTenantId) {
+      this.log?.error('Protected request rejected, tenant header missing', {
+        subject: principal.subject,
+      });
       throw new TenantHeaderMissingException({
         subject: principal.subject,
       });
     }
     const tenantId = validUuid(headerTenantId);
     if (!tenantId) {
+      this.log?.error(
+        'Protected request rejected, tenant header is not a UUID',
+        {
+          tenantId: headerTenantId,
+        },
+      );
       throw new TenantHeaderInvalidException({ tenantId: headerTenantId });
     }
 
