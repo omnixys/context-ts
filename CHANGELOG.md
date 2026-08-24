@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [3.2.1](https://github.com/omnixys/context-ts/compare/v3.2.0...v3.2.1) (2026-08-24)
+
+### Context
+
+* **Context:** break dependency cycle with logger package ([](https://github.com/omnixys/context-ts/commit/3c75161d4d7d96c2e866ab1624941f3872e1c88c))
+
 ## [3.2.0](https://github.com/omnixys/context-ts/compare/v3.1.3...v3.2.0) (2026-08-24)
 
 ### Context
