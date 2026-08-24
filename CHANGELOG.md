@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [3.2.0](https://github.com/omnixys/context-ts/compare/v3.1.3...v3.2.0) (2026-08-24)
+
+### Context
+
+* **Context:** log tenant header validation errors via OmnixysLogger ([](https://github.com/omnixys/context-ts/commit/29368b4df17723bec4a56b5b49e5592070397f2c))
+
 ## [3.1.3](https://github.com/omnixys/context-ts/compare/v3.1.2...v3.1.3) (2026-08-23)
 
 ### Context
