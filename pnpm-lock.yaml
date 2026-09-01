@@ -37,8 +37,8 @@ importers:
         specifier: ^13.2.4
         version: 13.4.2(@nestjs/common@11.1.16(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.16(@nestjs/common@11.1.16(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2))(graphql@16.13.2)(reflect-metadata@0.2.2)
       '@omnixys/contracts-ts':
-        specifier: ^3.4.0
-        version: 3.4.0(@nestjs/common@11.1.16(reflect-metadata@0.2.2)(rxjs@7.8.2))
+        specifier: file:../contracts
+        version: file:../contracts(@nestjs/common@11.1.16(reflect-metadata@0.2.2)(rxjs@7.8.2))
       '@semantic-release/changelog':
         specifier: ^6.0.3
         version: 6.0.3(semantic-release@25.0.3(typescript@5.9.3))
@@ -424,9 +424,9 @@ packages:
   '@octokit/types@16.0.0':
     resolution: {integrity: sha512-sKq+9r1Mm4efXW1FCk7hFSeJo4QKreL/tTbR0rz/qx/r1Oa2VV83LTA/H/MuCOX7uCIJmQVRKBcbmWoySjAnSg==}
 
-  '@omnixys/contracts-ts@3.4.0':
-    resolution: {integrity: sha512-YoKcwDQt7PHv8s04tiV9MyGlHlaoBH2jSntL41XU67Cq4i0OCAe8sCaHsQE6Dr1bAb7F3jCuzjMLfMZIHbQmKQ==, tarball: https://npm.pkg.github.com/download/@omnixys/contracts-ts/3.4.0/58bd8d001ff4b72035349164845ccad8dc3d92c2}
-    engines: {node: '>=20'}
+  '@omnixys/contracts-ts@file:../contracts':
+    resolution: {directory: ../contracts, type: directory}
+    engines: {node: '>=26.8.1 <27'}
     peerDependencies:
       '@nestjs/common': ^11.1.27
 
@@ -2544,7 +2544,7 @@ snapshots:
     dependencies:
       '@octokit/openapi-types': 27.0.0
 
-  '@omnixys/contracts-ts@3.4.0(@nestjs/common@11.1.16(reflect-metadata@0.2.2)(rxjs@7.8.2))':
+  '@omnixys/contracts-ts@file:../contracts(@nestjs/common@11.1.16(reflect-metadata@0.2.2)(rxjs@7.8.2))':
     dependencies:
       '@nestjs/common': 11.1.16(reflect-metadata@0.2.2)(rxjs@7.8.2)
       zod: 4.4.3

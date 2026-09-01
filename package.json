@@ -55,7 +55,7 @@
     "@commitlint/config-conventional": "^20.4.3",
     "@nestjs/core": "^11.1.16",
     "@nestjs/graphql": "^13.2.4",
-    "@omnixys/contracts-ts": "^3.4.0",
+    "@omnixys/contracts-ts": "file:../contracts",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/git": "^10.0.1",
