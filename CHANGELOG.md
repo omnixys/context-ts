@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [4.0.1](https://github.com/omnixys/context-ts/compare/v4.0.0...v4.0.1) (2026-09-02)
+
+### Release
+
+* **Release:** fix release ([](https://github.com/omnixys/context-ts/commit/fdabcdc8027e08feb183d02da61eab0178c06653))
+
 ## [4.0.0](https://github.com/omnixys/context-ts/compare/v3.2.2...v4.0.0) (2026-09-02)
 
 ### Ci
