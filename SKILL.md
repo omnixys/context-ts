@@ -9,7 +9,7 @@
 
 - Kind: Shared Package
 - Package: `@omnixys/context-ts` (version: 3.1.1)
-- Runtime: Node >=20 (pnpm >=10.33.0)
+- Runtime: Node >=26.8.1 (pnpm >=11.24.0)
 - Description: Omnixys context propagation package for TypeScript.
 - Architecture: src/ tenant/principal/correlation context propagation
 - Database: n/a; Migrations: n/a

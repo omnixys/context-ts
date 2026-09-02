@@ -5,10 +5,10 @@
   "license": "GPL-3.0-or-later",
   "type": "module",
   "main": "./dist/index.js",
-  "packageManager": "pnpm@10.33.0",
+  "packageManager": "pnpm@11.24.0",
   "types": "./dist/index.d.ts",
   "engines": {
-    "node": ">=20"
+    "node": ">=26.8.1 <27"
   },
   "exports": {
     ".": {
