@@ -32,6 +32,9 @@ jobs:
 
       - name: 📦 Install dependencies
         run: pnpm install --frozen-lockfile
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.OMNIXYS_TOKEN }}
 
       - name: 📦 build
         run: pnpm build
