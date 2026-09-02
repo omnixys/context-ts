@@ -40,7 +40,7 @@
     "@nestjs/common": "^10.0.0 || ^11.0.0",
     "@nestjs/core": "^10.0.0 || ^11.0.0",
     "@nestjs/graphql": "^13.2.4",
-    "@omnixys/contracts-ts": "^3.4.0",
+    "@omnixys/contracts-ts": "^4.0.0",
     "fastify": "^5.8.4",
     "graphql": "^16.13.2",
     "rxjs": "^7.8.2"
@@ -55,7 +55,7 @@
     "@commitlint/config-conventional": "^20.4.3",
     "@nestjs/core": "^11.1.16",
     "@nestjs/graphql": "^13.2.4",
-    "@omnixys/contracts-ts": "file:../contracts",
+    "@omnixys/contracts-ts": "^4.0.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/git": "^10.0.1",
