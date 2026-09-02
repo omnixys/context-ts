@@ -5,6 +5,7 @@ import type { PrincipalContext } from '../types/principal-context.type.js';
 import type { TenantContext } from '../types/tenant-context.type.js';
 import type { TraceMetadata } from '../types/trace-metadata.type.js';
 import type { TransportMetadata } from '../types/transport-metadata.type.js';
+import { PrincipalType } from '@omnixys/contracts-ts';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { randomUUID } from 'node:crypto';
 
@@ -115,6 +116,8 @@ function createLegacyPrincipal(
 
   return {
     subject,
+    principalType: context.userId ? PrincipalType.USER : PrincipalType.SERVICE,
+    serviceId: undefined,
     actorId: context.actorId,
     userId: context.userId,
     roles: context.roles ?? [],
@@ -313,6 +316,8 @@ function mergePrincipalContext(
   return {
     ...current.principal,
     subject,
+    principalType: current.principal?.principalType ?? PrincipalType.SERVICE,
+    serviceId: current.principal?.serviceId,
     actorId: patch.actorId ?? current.principal?.actorId ?? current.actorId,
     userId: patch.userId ?? current.principal?.userId ?? current.userId,
     roles: patch.roles ?? current.principal?.roles ?? current.roles ?? [],

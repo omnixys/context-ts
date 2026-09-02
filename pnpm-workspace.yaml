@@ -1,0 +1,4 @@
+allowBuilds:
+  '@nestjs/core': true
+minimumReleaseAgeExclude:
+  - '@omnixys/contracts-ts@4.0.0'
