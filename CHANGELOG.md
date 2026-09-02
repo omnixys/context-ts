@@ -3,6 +3,32 @@
 All notable changes in this project will be documented in this file.
 
 
+## [4.0.0](https://github.com/omnixys/context-ts/compare/v3.2.2...v4.0.0) (2026-09-02)
+
+### Ci
+
+* **Ci:** add missing labeler and dependabot config to match contracts ([](https://github.com/omnixys/context-ts/commit/8af9a2c97b897a1465092ef7954f73a58d70a074))
+* **Ci:** add npm registry auth before install in release workflow ([](https://github.com/omnixys/context-ts/commit/802d7d65fc19a14d2d12a4ad44be0d273fa25afc))
+* **Ci:** fix ([](https://github.com/omnixys/context-ts/commit/cbd0648a40246406cfc7c3deb3e6d3f24dd70f07))
+* **Ci:** fix ([](https://github.com/omnixys/context-ts/commit/a4a2282811af42c52d0eb2e32104b5cc34161075))
+
+### Other
+
+* **Other:** Create build.yml ([](https://github.com/omnixys/context-ts/commit/5fd45826052632598d17f81dd3c9dbcf5aec8fcf))
+* **Other:** Create commitlint-formatter.js ([](https://github.com/omnixys/context-ts/commit/fdf993ff76fad5497b513436421775a91b57124d))
+* **Other:** Merge pull request #1 from omnixys/migration/uuid-v7 ([](https://github.com/omnixys/context-ts/commit/35800063fa5dd5a2d593ad7784e7a70a23356c04)), closes [#1](https://github.com/omnixys/context-ts/issues/1)
+* **Other:** Update build.yml ([](https://github.com/omnixys/context-ts/commit/8b764cb0da34072430a668eb54816fefcb552cce))
+* **Other:** Update build.yml ([](https://github.com/omnixys/context-ts/commit/f116e7a5322e1ae1cf460f8d0481f62fed01f5a9))
+* **Other:** Update pnpm-lock.yaml ([](https://github.com/omnixys/context-ts/commit/420db7d5f57a5e3c6e4f7237749086e58ba9fdf4))
+
+### Principal
+
+* **Principal:** add principal type and service id to principal context ([](https://github.com/omnixys/context-ts/commit/6601d6953f854f611e77ea360f07581357878b34))
+
+### Runtime
+
+* **Runtime:** require node 26.8.1 and pnpm 11.24.0 ([](https://github.com/omnixys/context-ts/commit/58132cc510b13e96d1e0302d5ebce9837a7a0450))
+
 ## [3.2.2](https://github.com/omnixys/context-ts/compare/v3.2.1...v3.2.2) (2026-08-28)
 
 ### Deps
