@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [4.0.3](https://github.com/omnixys/context-ts/compare/v4.0.2...v4.0.3) (2026-09-03)
+
+### Context
+
+* **Context:** resolve user tenant membership via userId instead of subject ([](https://github.com/omnixys/context-ts/commit/cc243260238406d72daee372e791b13551be7b61))
+
 ## [4.0.2](https://github.com/omnixys/context-ts/compare/v4.0.1...v4.0.2) (2026-09-02)
 
 ### Release
