@@ -11,9 +11,6 @@ importers:
       '@fastify/cookie':
         specifier: ^11.0.0
         version: 11.0.2
-      '@nestjs/common':
-        specifier: ^10.0.0 || ^11.0.0
-        version: 11.2.3(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@7.2.0)
       geoip-lite:
         specifier: ^1.4.10
         version: 1.4.10
@@ -30,6 +27,9 @@ importers:
       '@commitlint/config-conventional':
         specifier: ^20.4.3
         version: 20.4.3
+      '@nestjs/common':
+        specifier: ^11.1.16
+        version: 11.2.3(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@7.2.0)
       '@nestjs/core':
         specifier: ^11.1.16
         version: 11.1.16(@nestjs/common@11.2.3(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@7.2.0))(reflect-metadata@0.2.2)(rxjs@7.8.2)

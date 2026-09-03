@@ -48,6 +48,7 @@ import {
   NestInterceptor,
   Optional,
 } from '@nestjs/common';
+import { PrincipalType } from '@omnixys/contracts-ts';
 import { randomUUID } from 'node:crypto';
 import { defer, from, Observable, switchMap } from 'rxjs';
 
@@ -259,7 +260,11 @@ export class ContextInterceptor implements NestInterceptor {
       throw new TenantHeaderInvalidException({ tenantId: headerTenantId });
     }
 
-    await this.tenantVerifier?.verify({ userId: principal.subject, tenantId });
+    if (principal.principalType === PrincipalType.USER) {
+      await this.tenantVerifier?.verify({ userId: principal.userId, tenantId });
+    } else {
+      await this.tenantVerifier?.verify({ tenantId });
+    }
 
     return { tenantId, source: 'trusted-header', verified: true };
   }

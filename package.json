@@ -53,6 +53,7 @@
     "@biomejs/biome": "^2.4.6",
     "@commitlint/cli": "^20.4.3",
     "@commitlint/config-conventional": "^20.4.3",
+    "@nestjs/common": "^11.1.16",
     "@nestjs/core": "^11.1.16",
     "@nestjs/graphql": "^13.2.4",
     "@omnixys/contracts-ts": "^4.0.0",
