@@ -85,7 +85,7 @@ export class ContextInterceptor implements NestInterceptor {
     @Inject(OMNIXYS_LOGGER)
     private readonly logger?: PlatformContextLogger,
   ) {
-    this.log = this.logger?.log(this.constructor.name);
+    this.log = this.logger?.log(this.constructor.name, 'package:@omnixys/context-ts');
   }
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {

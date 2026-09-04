@@ -10,5 +10,5 @@ export interface ScopedErrorLogger {
 }
 
 export interface PlatformContextLogger {
-  log(context: string): ScopedErrorLogger;
+  log(context: string, source?: string): ScopedErrorLogger;
 }
