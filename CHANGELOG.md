@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [4.1.0](https://github.com/omnixys/context-ts/compare/v4.0.3...v4.1.0) (2026-09-04)
+
+### Log
+
+* **Log:** add logger ([](https://github.com/omnixys/context-ts/commit/d0b799fa057688777b4a59ef9529134b6e4b5a8a))
+
 ## [4.0.3](https://github.com/omnixys/context-ts/compare/v4.0.2...v4.0.3) (2026-09-03)
 
 ### Context
