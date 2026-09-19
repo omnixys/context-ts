@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [4.1.1](https://github.com/omnixys/context-ts/compare/v4.1.0...v4.1.1) (2026-09-19)
+
+### Deps
+
+* **Deps:** update omnixys contracts-ts package ([](https://github.com/omnixys/context-ts/commit/ddac097a38ae1842aac0a3f2496cbc2afde4f7d1))
+
 ## [4.1.0](https://github.com/omnixys/context-ts/compare/v4.0.3...v4.1.0) (2026-09-04)
 
 ### Log
